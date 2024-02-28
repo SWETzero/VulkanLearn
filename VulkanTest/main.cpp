@@ -13,7 +13,7 @@
 #include <optional>
 #include <set>
 
-const uint32_t WIDTH = 800;
+const uint32_t WIDTH = 800; //定义窗口大小
 const uint32_t HEIGHT = 600;
 
 const int MAX_FRAMES_IN_FLIGHT = 2;
@@ -67,14 +67,14 @@ struct SwapChainSupportDetails {
 class HelloTriangleApplication {
 public:
     void run() {
-        initWindow();
+        initWindow();   //执行过程
         initVulkan();
         mainLoop();
         cleanup();
     }
 
 private:
-    GLFWwindow* window;
+    GLFWwindow* window;     //GLFW窗口
 
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
@@ -105,16 +105,16 @@ private:
     std::vector<VkFence> inFlightFences;
     uint32_t currentFrame = 0;
 
-    void initWindow() {
+    void initWindow() {     //初始化窗口
         glfwInit();
 
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);   //提示GLFW不在后续创建OpenGL上下文
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);     //禁用调整窗口
 
-        window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
+        window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);   //创建窗口：前三个参数指定窗口的宽度、高度和标题。第四个参数允许您选择性地指定打开窗口的显示器，最后一个参数仅与 OpenGL 有关
     }
 
-    void initVulkan() {
+    void initVulkan() {     //初始化Vulkan
         createInstance();
         setupDebugMessenger();
         createSurface();
@@ -130,8 +130,9 @@ private:
         createSyncObjects();
     }
 
-    void mainLoop() {
-        while (!glfwWindowShouldClose(window)) {
+    void mainLoop() {   //渲染主循环
+        
+        while (!glfwWindowShouldClose(window)) {    //它会循环检查按 X 按钮等事件，直到用户关闭窗口
             glfwPollEvents();
             drawFrame();
         }
@@ -139,7 +140,7 @@ private:
         vkDeviceWaitIdle(device);
     }
 
-    void cleanup() {
+    void cleanup() {    //析构、退出程序
         for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
             vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
             vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
@@ -170,9 +171,9 @@ private:
         vkDestroySurfaceKHR(instance, surface, nullptr);
         vkDestroyInstance(instance, nullptr);
 
-        glfwDestroyWindow(window);
+        glfwDestroyWindow(window);      //销毁GLFW显示窗口
 
-        glfwTerminate();
+        glfwTerminate();                //终止GLFW
     }
 
     void createInstance() {
